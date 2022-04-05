@@ -1,0 +1,21 @@
+{
+  "name": "snake-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc-watch --onSuccess 'fix-tsc-esnext-imports dist/'",
+    "serve": "http-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "fix-tsc-esnext-imports": "^1.0.5",
+    "http-server": "^14.1.0",
+    "tsc-watch": "^4.6.2"
+  }
+}

@@ -26,7 +26,7 @@ import { drawSnake, drawWindow, getCanvasContext } from "./canvas";
   const window = new SquareWindow(canvasContext.canvas.width);
 
   drawWindow(canvasContext, window);
-  drawSnake(canvasContext, snake);
+  drawSnake(canvasContext, window, snake);
 
   document.addEventListener('keydown', (event) => {
     direction = isArrowKey(event.code) ? keyToDirectionMap[event.code] : direction;
@@ -35,6 +35,6 @@ import { drawSnake, drawWindow, getCanvasContext } from "./canvas";
   
   setInterval(() => {
     snake.move(direction, window, false);
-    drawSnake(canvasContext, snake);
+    drawSnake(canvasContext, window, snake);
   }, 500)
 })();

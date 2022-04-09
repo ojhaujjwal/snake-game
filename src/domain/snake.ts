@@ -1,13 +1,6 @@
 import { Point } from "./point";
-import { Direction } from "./types";
+import { Direction, oppositeDirection } from "./types";
 import { SquareWindow } from "./window";
-
-const oppositeDirection = {
-  [Direction.RIGHT]: Direction.LEFT,
-  [Direction.LEFT]: Direction.RIGHT,
-  [Direction.UP]: Direction.DOWN,
-  [Direction.DOWN]: Direction.UP,
-};
 
 export class Turn {
   constructor(
@@ -87,25 +80,7 @@ export class Snake {
       return this.tail.move(this.direction);
     }
 
-    const lastTurn = this.turns[0].point;
-
-    if (lastTurn.isRightOf(this.tail)) {
-      return this.tail.move(Direction.RIGHT);
-    }
-
-    if (lastTurn.isLeftOf(this.tail)) {
-      return this.tail.move(Direction.LEFT);
-    }
-
-    if (lastTurn.isAboveOf(this.tail)) {
-      return this.tail.move(Direction.UP);
-    }
-
-    if (lastTurn.isBelowTo(this.tail)) {
-      return this.tail.move(Direction.DOWN);
-    }
-
-    return this.tail;
+    return this.tail.move(this.turns[0].directionTo);
   }
 
   private adjustWithinWindow(window: SquareWindow, p: Point): Point

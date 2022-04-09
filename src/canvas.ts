@@ -35,35 +35,31 @@ export const drawWindow = (context: CanvasRenderingContext2D, window: SquareWind
   drawLine(context, new Point(window.length, 0), new Point(window.length, window.length));
 }
 
-export const drawSnake = (context: CanvasRenderingContext2D, snake: Snake) => {
+export const drawSnake = (context: CanvasRenderingContext2D, window: SquareWindow, snake: Snake) => {
   context.clearRect(1, 1, context.canvas.width - 2, context.canvas.height - 2);
 
   context.fillStyle = 'lightblue';  
   context.strokeStyle = 'darkblue';
 
   for (const part of snake.getStraightParts()) {
-    drawSnakeStraightPart(context, part);
+    for (const p of window.splitPartToFitInside(part)) {
+      drawSnakeStraightPart(context, p);
+    }
   }
 };
 
 const drawSnakeStraightPart = (context: CanvasRenderingContext2D, part: StraightPart): void => {
-  const p1 = part.from;
-  const p2 = part.to;
-  
-  const width = p2.x - p1.x;
-  const height = p2.y - p1.y;
+  // if (part.direction === Direction.RIGHT && p2.isLeftOf(p1)) {
+  //   drawLine(context, p1, new Point(context.canvas.width - 1, p1.y));
+  //   drawLine(context, new Point(1, p1.y), p2);
+  //   return;
+  // }
 
-  if (part.direction === Direction.RIGHT && p2.isLeftOf(p1)) {
-    drawLine(context, p1, new Point(context.canvas.width - 1, p1.y));
-    drawLine(context, new Point(1, p1.y), p2);
-    return;
-  }
-
-  if (part.direction === Direction.LEFT && p2.isRightOf(p1)) {
-    drawLine(context, p1, new Point(1, p1.y));
-    drawLine(context, new Point(context.canvas.width - 1, p1.y), p2);
-    return;
-  }
+  // if (part.direction === Direction.LEFT && p2.isRightOf(p1)) {
+  //   drawLine(context, p1, new Point(1, p1.y));
+  //   drawLine(context, new Point(context.canvas.width - 1, p1.y), p2);
+  //   return;
+  // }
 
   // if (
   //   (snake.direction === Direction.RIGHT && p2.isLeftOf(p1))
@@ -75,12 +71,12 @@ const drawSnakeStraightPart = (context: CanvasRenderingContext2D, part: Straight
   //   return;
   // }
 
-  drawLine(context, p1, p2);
+  drawLine(context, part.from, part.to);
 };
 
 const drawLine = (context: CanvasRenderingContext2D, p1: Point, p2: Point) => {
-  context.beginPath();       // Start a new path
-  context.moveTo(p1.x, p1.y);    // Move the pen to (30, 50)
-  context.lineTo(p2.x, p2.y);  // Draw a line to (150, 100)
+  context.beginPath();
+  context.moveTo(p1.x, p1.y);
+  context.lineTo(p2.x, p2.y);
   context.stroke();
 }

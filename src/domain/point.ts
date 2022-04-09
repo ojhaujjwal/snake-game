@@ -45,4 +45,20 @@ export class Point {
   withY(y: number) {
     return new Point(this._x, y);
   }
+
+  isRightOf(p: Point): boolean {
+    return this.x > p.x;
+  }
+
+  isLeftOf(p: Point): boolean {
+    return this.x < p.x;
+  }
+
+  isAboveOf(p: Point): boolean {
+    return this.y > p.y;
+  }
+
+  isBelowTo(p: Point): boolean {
+    return this.y < p.y;
+  }
 }

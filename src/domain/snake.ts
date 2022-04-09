@@ -35,13 +35,15 @@ export class Snake {
       this.turns.push(oldHead);
     }
 
-    this.head = window.adjustInsideWindow(this.head);
+    this.direction = actualDirection;
+
+    //this.head = window.adjustInsideWindow(this.head);
 
     if (ateFruit) {
       return;
     }
 
-    this.tail = this.tail.move(actualDirection);
+    this.tail = this.moveTail();
 
     if (this.turns.length > 0 && this.turns[0].isEqual(this.tail)) {
       this.turns = this.turns.slice(1);
@@ -58,5 +60,31 @@ export class Snake {
     }
 
     return parts;
+  }
+
+  private moveTail(): Point {
+    if (!this.turns.length) {
+      return this.tail.move(this.direction);
+    }
+
+    const lastTurn = this.turns[0];
+
+    if (lastTurn.isRightOf(this.tail)) {
+      return this.tail.move(Direction.RIGHT);
+    }
+
+    if (lastTurn.isLeftOf(this.tail)) {
+      return this.tail.move(Direction.LEFT);
+    }
+
+    if (lastTurn.isAboveOf(this.tail)) {
+      return this.tail.move(Direction.UP);
+    }
+
+    if (lastTurn.isBelowTo(this.tail)) {
+      return this.tail.move(Direction.DOWN);
+    }
+
+    return this.tail;
   }
 }

@@ -4,19 +4,35 @@ import { Direction } from "./domain/types";
 import { SquareWindow } from "./domain/window";
 import { drawSnake } from "./ui/canvas";
 
-const snake = new Snake(
-  new Point(1, 1),
-  new Point(1, 5),
-  Direction.RIGHT,
-);
+(() => {
+  const keyToDirectionMap = {
+    'ArrowUp': Direction.UP,
+    'ArrowRight': Direction.RIGHT,
+    'ArrowDown': Direction.DOWN,
+    'ArrowLeft': Direction.LEFT,
+  } as const;
 
-const window = new SquareWindow(50);
+  const isArrowKey = (code: string): code is keyof typeof keyToDirectionMap => code in keyToDirectionMap;
 
-drawSnake(snake);
-//console.log('drawSnake start');
+  let direction = Direction.RIGHT;
 
-setInterval(() => {
-  snake.move(snake.direction, window, false);
+  const snake = new Snake(
+    new Point(20, 20),
+    new Point(1, 20),
+    direction,
+  );
+
+  const window = new SquareWindow(50);
+
   drawSnake(snake);
-  //console.log('drawSnake interval');
-}, 500)
+
+  document.addEventListener('keydown', (event) => {
+    direction = isArrowKey(event.code) ? keyToDirectionMap[event.code] : direction;
+    console.log(`Received input for changing direction to ${direction}`)
+  });
+  
+  setInterval(() => {
+    snake.move(direction, window, false);
+    drawSnake(snake);
+  }, 500)
+})();

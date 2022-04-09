@@ -37,7 +37,7 @@ export class Snake {
 
     this.direction = actualDirection;
 
-    //this.head = window.adjustInsideWindow(this.head);
+    this.adjustWithinWindow(window);
 
     if (ateFruit) {
       return;
@@ -86,5 +86,21 @@ export class Snake {
     }
 
     return this.tail;
+  }
+
+  private adjustWithinWindow(window: SquareWindow)
+  {
+    if (!window.isPointOutside(this.head)) {
+      return;
+    }
+
+    if (this.direction === Direction.RIGHT) {
+      this.head = this.head.withX(1);
+      return;
+    }
+
+    if (this.direction === Direction.LEFT) {
+      this.head = this.head.withX(window.length - 1);
+    }
   }
 }

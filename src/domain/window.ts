@@ -1,27 +1,16 @@
 import { Point } from "./point";
+import { Direction } from "./types";
 
 export class SquareWindow {
   constructor(
-    private length: number,
+    public readonly length: number,
   ) {}
 
-  adjustInsideWindow(p: Point): Point {
-    if (p.x < 0) {
-      return p.withX(this.length);
-    }
-
-    if (p.y < 0) {
-      return p.withY(this.length);
-    }
-
-    if (p.x > this.length) {
-      return p.withX(0);
-    }
-
-    if (p.y > this.length) {
-      return p.withY(0);
-    }
-
-    return p;
+  isPointOutside(p: Point): boolean {
+    return p.x <= 0 || p.y <= 0 || p.x >= this.length || p.y >= this.length;
   }
+
+  // doesLineCrossWindow(p1: Point, p2: Point) {
+  //   if (p2.x)
+  // }
 }

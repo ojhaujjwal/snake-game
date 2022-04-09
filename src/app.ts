@@ -2,7 +2,7 @@ import { Point } from "./domain/point";
 import { Snake } from "./domain/snake";
 import { Direction } from "./domain/types";
 import { SquareWindow } from "./domain/window";
-import { drawSnake } from "./ui/canvas";
+import { drawSnake, drawWindow, getCanvasContext } from "./canvas";
 
 (() => {
   const keyToDirectionMap = {
@@ -17,14 +17,16 @@ import { drawSnake } from "./ui/canvas";
   let direction = Direction.RIGHT;
 
   const snake = new Snake(
-    new Point(20, 20),
-    new Point(1, 20),
+    new Point(80, 20),
+    new Point(60, 20),
     direction,
   );
 
-  const window = new SquareWindow(50);
+  const canvasContext = getCanvasContext();
+  const window = new SquareWindow(canvasContext.canvas.width);
 
-  drawSnake(snake);
+  drawWindow(canvasContext, window);
+  drawSnake(canvasContext, snake);
 
   document.addEventListener('keydown', (event) => {
     direction = isArrowKey(event.code) ? keyToDirectionMap[event.code] : direction;
@@ -33,6 +35,6 @@ import { drawSnake } from "./ui/canvas";
   
   setInterval(() => {
     snake.move(direction, window, false);
-    drawSnake(snake);
+    drawSnake(canvasContext, snake);
   }, 500)
 })();

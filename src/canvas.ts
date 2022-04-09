@@ -1,5 +1,5 @@
 import { Point } from "./domain/point";
-import { Snake } from "./domain/snake";
+import { Snake, StraightPart } from "./domain/snake";
 import { Direction } from "./domain/types";
 import { SquareWindow } from "./domain/window";
 
@@ -41,18 +41,27 @@ export const drawSnake = (context: CanvasRenderingContext2D, snake: Snake) => {
   context.fillStyle = 'lightblue';  
   context.strokeStyle = 'darkblue';
 
-  for (const [point1, point2] of snake.getStraightParts()) {
-    drawSnakeStraightPart(context, snake, point1, point2);
+  for (const part of snake.getStraightParts()) {
+    drawSnakeStraightPart(context, part);
   }
 };
 
-const drawSnakeStraightPart = (context: CanvasRenderingContext2D, snake: Snake, p1: Point, p2: Point): void => {
+const drawSnakeStraightPart = (context: CanvasRenderingContext2D, part: StraightPart): void => {
+  const p1 = part.from;
+  const p2 = part.to;
+  
   const width = p2.x - p1.x;
   const height = p2.y - p1.y;
 
-  if (snake.direction === Direction.RIGHT && p2.isLeftOf(p1)) {
-    drawSnakeStraightPart(context, snake, p1, new Point(context.canvas.width - 1, p1.y));
-    drawSnakeStraightPart(context, snake, new Point(1, p1.y), p2);
+  if (part.direction === Direction.RIGHT && p2.isLeftOf(p1)) {
+    drawLine(context, p1, new Point(context.canvas.width - 1, p1.y));
+    drawLine(context, new Point(1, p1.y), p2);
+    return;
+  }
+
+  if (part.direction === Direction.LEFT && p2.isRightOf(p1)) {
+    drawLine(context, p1, new Point(1, p1.y));
+    drawLine(context, new Point(context.canvas.width - 1, p1.y), p2);
     return;
   }
 

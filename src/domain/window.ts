@@ -9,8 +9,4 @@ export class SquareWindow {
   isPointOutside(p: Point): boolean {
     return p.x <= 0 || p.y <= 0 || p.x >= this.length || p.y >= this.length;
   }
-
-  // doesLineCrossWindow(p1: Point, p2: Point) {
-  //   if (p2.x)
-  // }
 }
